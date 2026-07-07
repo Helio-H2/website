@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /l/
+Disallow: /p/
+Disallow: /s/
+Disallow: /t/
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.helioh2.com/sitemap.xml
