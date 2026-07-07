@@ -1,0 +1,95 @@
+@import 'stile.css';
+
+#hero-under {
+  min-width: 100vw;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 72px;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.62) 100%, rgba(255, 255, 255, 0) 100%, rgba(0, 0, 0, 0.45)),
+    url('../images/underConstruction.jpg');
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.container {
+  text-align: center;
+  padding: 5%;
+  width: 100vw;
+  height: 100vh;
+}
+
+.logo,
+.logo a {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #f5c518;
+  text-shadow: 0 0 30px rgba(245, 197, 24, 0.5);
+  margin-bottom: 0.2rem;
+  text-decoration: none;
+}
+
+.logo span {
+  color: #fff;
+}
+
+.tagline {
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 3rem;
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: spin 6s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #f5c518;
+}
+
+p {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.contact {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.contact a {
+  color: #f5c518;
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}

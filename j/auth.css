@@ -1,0 +1,153 @@
+@import 'solartools.css';
+
+/* ─── LOGIN CONTAINER ────────────────────────────────────────────────── */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  padding: 60px 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-container h1 {
+  font-size: 2.2rem;
+  color: var(--color-blue);
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+}
+
+.login-container p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+/* ─── LOGIN FORM ─────────────────────────────────────────────────────── */
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#loginForm label {
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#loginForm input {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  font-family: inherit;
+}
+
+#loginForm input:focus {
+  outline: none;
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 3px rgba(0, 87, 178, 0.1);
+}
+
+#loginForm button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-green) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#loginForm button:hover {
+  background: linear-gradient(135deg, var(--color-blue-dark) 0%, var(--color-blue) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 87, 178, 0.4);
+}
+
+#loginForm button:active {
+  transform: translateY(0);
+}
+
+/* ─── MESSAGES ───────────────────────────────────────────────────────── */
+.msg {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: none;
+}
+
+.msg.bad {
+  display: block;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.msg.ok {
+  display: block;
+  background: #d1fae5;
+  color: #059669;
+  border: 1px solid #6ee7b7;
+}
+
+/* ─── LOCKED SECTION (LINKS) ─────────────────────────────────────────── */
+#locked {
+  display: none;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.buttons a {
+  padding: 12px 20px;
+  background: white;
+  border: 2px solid var(--color-blue);
+  color: var(--color-blue);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.buttons a:hover {
+  background: var(--color-blue);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 87, 178, 0.3);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 40px 24px;
+  }
+
+  .login-container h1 {
+    font-size: 1.8rem;
+  }
+}

@@ -1,0 +1,1096 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HelioH₂ — simulatore.css
+   Stili dedicati al simulatore fotovoltaico
+   Dipende da stile.css (variabili, reset, typography, container, btn, card)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@import 'stile.css';
+
+/* ─── HERO SIMULATORE ───────────────────────────────────────────────────── */
+#hero-simulatore {
+    min-height: 52vh;
+    background-image:
+        linear-gradient(to bottom, rgba(0, 20, 50, 0.72) 0%, rgba(0, 61, 122, 0.6) 60%, rgba(0, 87, 178, 0.3) 100%),
+        url('/s/images/landing6.png');
+    background-size: cover;
+    background-position: center 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soluzioni Indipendenti */
+#hero-simulatore.hero-indipendente {
+    background-image:
+        linear-gradient(to bottom, rgba(0, 20, 50, 0.68) 0%, rgba(0, 40, 20, 0.5) 60%, rgba(0, 0, 0, 0.18) 100%),
+        url('/s/images/indipendenti.png');
+    background-position: center 40%;
+}
+
+/* Soluzioni Integrate */
+#hero-simulatore.hero-integrata {
+    background-image:
+        linear-gradient(to bottom, rgba(0, 20, 50, 0.68) 0%, rgba(0, 40, 20, 0.5) 60%, rgba(0, 0, 0, 0.18) 100%),
+        url('/s/images/integrati.png');
+    background-position: center 40%;
+}
+
+#hero-simulatore::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--color-white));
+}
+
+/* ─── TOOL SWITCHER TABS ────────────────────────────────────────────────── */
+#tool-switcher {
+    padding: 0;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 72px;
+    z-index: 50;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.tool-tabs {
+    display: flex;
+    gap: 0;
+}
+
+.tool-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 2rem;
+    border: none;
+    background: var(--color-white);
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition);
+    text-align: left;
+    position: relative;
+}
+
+.tool-tab:hover {
+    background: var(--color-neutral);
+}
+
+.tool-tab.active {
+    border-bottom-color: var(--color-blue);
+    background: rgba(0, 87, 178, 0.04);
+}
+
+.tool-tab:last-child.active {
+    border-bottom-color: var(--color-green);
+    background: rgba(0, 130, 53, 0.04);
+}
+
+.tool-tab-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-neutral);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: all var(--transition);
+}
+
+.tool-tab.active .tool-tab-icon {
+    background: rgba(0, 87, 178, 0.1);
+    color: var(--color-blue);
+}
+
+.tool-tab:last-child.active .tool-tab-icon {
+    background: rgba(0, 130, 53, 0.1);
+    color: var(--color-green);
+}
+
+.tool-tab-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    display: block;
+    line-height: 1.2;
+}
+
+.tool-tab-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 0.15rem;
+    font-weight: 400;
+}
+
+@media (max-width: 600px) {
+    .tool-tab {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .tool-tab-icon {
+        display: none;
+    }
+
+    .tool-tab-label {
+        font-size: 0.8rem;
+    }
+
+    .tool-tab-sub {
+        display: none;
+    }
+}
+
+/* ─── ESTIMATOR AREA ────────────────────────────────────────────────────── */
+#estimator-area {
+    background: var(--color-neutral);
+    padding: 3rem 0 5rem;
+    min-height: 60vh;
+}
+
+/* ─── DEFAULT PANEL ─────────────────────────────────────────────────────── */
+.panel-default {
+    padding: 2rem 0;
+}
+
+.default-cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+    .default-cta-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.default-cta-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    border: 2px solid transparent;
+    box-shadow: var(--shadow);
+    transition: all var(--transition);
+    text-align: center;
+    cursor: pointer;
+}
+
+.default-cta-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.default-cta-card.blue {
+    border-color: rgba(0, 87, 178, 0.15);
+}
+
+.default-cta-card.green {
+    border-color: rgba(0, 130, 53, 0.15);
+}
+
+.default-cta-card.blue:hover {
+    border-color: var(--color-blue);
+}
+
+.default-cta-card.green:hover {
+    border-color: var(--color-green);
+}
+
+.default-cta-icon {
+    font-size: 3rem;
+    margin-bottom: 1.25rem;
+}
+
+.default-cta-card h3 {
+    font-size: 1.15rem;
+    color: var(--color-blue);
+    margin-bottom: 0.75rem;
+}
+
+.default-cta-card.green h3 {
+    color: var(--color-green);
+}
+
+.default-cta-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    flex: 1;
+}
+
+/* ─── ESTIMATOR PANEL LAYOUT ────────────────────────────────────────────── */
+.estimator-panel {
+    animation: fadeUp 0.4s ease both;
+}
+
+.estimator-layout {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .estimator-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ─── FORM COLUMN ───────────────────────────────────────────────────────── */
+.estimator-form-col {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+    position: sticky;
+    top: 135px;
+}
+
+@media (max-width: 1024px) {
+    .estimator-form-col {
+        position: static;
+    }
+}
+
+.form-header {
+    margin-bottom: 2rem;
+}
+
+.form-header h2 {
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    margin: 0.5rem 0 0.75rem;
+    color: var(--color-blue);
+}
+
+.form-header p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+/* ─── FORM ELEMENTS ─────────────────────────────────────────────────────── */
+.estimator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#consumo-f1f2f3-block .form-group label {
+    width: 10%;
+}
+
+#consumo-f1f2f3-block .form-group input {
+    width: 80%;
+    padding: 0% 2.5%;
+}
+
+#consumo-f1f2f3-block .form-row {
+    grid-template-columns: unset !important;
+    grid-template-rows: 1fr;
+    gap: 0rem !important;
+}
+
+#consumo-f1f2f3-block .input-note {
+    width: 100%;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    padding-top: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    font-style: italic;
+    margin: 0 20%;
+    text-align: center;
+}
+
+.form-group-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+}
+
+.required {
+    color: var(--color-blue);
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    background: var(--color-white);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 3px rgba(0, 87, 178, 0.12);
+}
+
+.form-input::placeholder {
+    color: #b0b7c3;
+}
+
+select.form-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a5568' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.form-hint-block {
+    background: rgba(0, 87, 178, 0.05);
+    border-left: 3px solid var(--color-blue);
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.form-section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 0.5rem 0 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: 0.25rem;
+}
+
+.form-error {
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: #dc2626;
+    line-height: 1.5;
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* ─── CONSUMPTION TOGGLE ────────────────────────────────────────────────── */
+.consumption-toggle {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.toggle-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.toggle-option input[type="radio"] {
+    accent-color: var(--color-blue);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.toggle-label {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* ─── RESULTS COLUMN ────────────────────────────────────────────────────── */
+.estimator-results-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Placeholder */
+.results-placeholder {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 4rem 2rem;
+    text-align: center;
+    border: 2px dashed var(--color-border);
+}
+
+.placeholder-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.results-placeholder p {
+    color: var(--color-text-muted);
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Loading */
+.results-loading {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 4rem 2rem;
+    text-align: center;
+    border: 1px solid var(--color-border);
+}
+
+.loading-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(0, 87, 178, 0.15);
+    border-top-color: var(--color-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1.25rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Results container */
+.results-container {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+    animation: fadeUp 0.5s ease both;
+}
+
+.results-header {
+    margin-bottom: 1.75rem;
+}
+
+.results-header h3 {
+    font-size: 1.25rem;
+    color: var(--color-blue);
+    margin: 0.4rem 0 0.5rem;
+}
+
+.pvgis-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--color-green);
+    font-weight: 500;
+}
+
+.pvgis-badge.badge-warning {
+    color: #92400E;
+}
+
+/* ─── METRICS GRID ──────────────────────────────────────────────────────── */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metrics-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 900px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.metric-card {
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.metric-card.blue {
+    background: rgba(0, 87, 178, 0.06);
+    border-color: rgba(0, 87, 178, 0.12);
+}
+
+.metric-card.green {
+    background: rgba(0, 130, 53, 0.06);
+    border-color: rgba(0, 130, 53, 0.12);
+}
+
+.metric-card.yellow {
+    background: rgba(230, 194, 0, 0.08);
+    border-color: rgba(230, 194, 0, 0.2);
+}
+
+.metric-card.neutral {
+    background: var(--color-neutral);
+    border-color: var(--color-border);
+}
+
+.metric-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--color-blue);
+    line-height: 1;
+}
+
+.metric-card.green .metric-value {
+    color: var(--color-green);
+}
+
+.metric-card.yellow .metric-value {
+    color: #8a7400;
+}
+
+.metric-unit {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-top: 0.3rem;
+}
+
+/* ─── RANGE CALLOUT ─────────────────────────────────────────────────────── */
+.form-range {
+    width: 100%;
+    accent-color: var(--color-blue);
+    cursor: pointer;
+    height: 6px;
+    margin: 0.4rem 0;
+}
+
+.range-bounds {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    margin-top: 0.2rem;
+    width: 100%;
+}
+
+.range-wrap {
+    position: relative;
+    width: 100%;
+    /* padding-top: 1.75rem; /* space above for the callout */
+}
+
+.range-callout {
+    position: absolute;
+    bottom: -0.4rem;
+    transform: translateX(-50%);
+    background: var(--color-white);
+    color: var(--color-text-muted);
+    border: 1px solid;
+    border-color: var(--color-text-muted);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: left 0.08s ease;
+}
+
+/* Small triangle pointing down */
+.range-callout::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-bottom-color: var(--color-text-muted);
+}
+
+/* ─── PUN AUTO FIELD ────────────────────────────────────────────────────── */
+.pun-field-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pun-readonly {
+    background: var(--color-neutral) !important;
+    color: var(--color-text-muted) !important;
+    cursor: not-allowed !important;
+    border-color: var(--color-border) !important;
+    padding-right: 4rem;
+}
+
+.pun-readonly:focus {
+    box-shadow: none !important;
+    border-color: var(--color-border) !important;
+}
+
+.pun-auto-badge {
+    position: absolute;
+    right: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--color-white);
+    background: var(--color-green);
+    border-radius: 4px;
+    padding: 0.2rem 0.45rem;
+    pointer-events: none;
+    user-select: none;
+}
+
+.pun-badge {
+    display: block;
+    font-size: 0.72rem;
+    margin-top: 0.3rem;
+    font-weight: 500;
+}
+
+.pun-live {
+    color: var(--color-green);
+}
+
+.pun-cached {
+    color: var(--color-text-muted);
+}
+
+.pun-fallback {
+    color: #92400E;
+}
+
+/* ─── ASSUMPTIONS NOTE ──────────────────────────────────────────────────── */
+.assumptions-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-neutral);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0 1.5rem;
+    line-height: 1.5;
+}
+
+.assumptions-note svg {
+    flex-shrink: 0;
+    color: var(--color-blue);
+    margin-top: 1px;
+}
+
+/* ─── SCENARIO CARDS ────────────────────────────────────────────────────── */
+.scenario-cards {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+    .scenario-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+.scenario-card {
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.scenario-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.scenario-card.proprieta {
+    background: rgba(0, 87, 178, 0.04);
+    border-color: rgba(0, 87, 178, 0.2);
+}
+
+.scenario-card.risparmio {
+    background: rgba(0, 130, 53, 0.04);
+    border-color: rgba(0, 130, 53, 0.2);
+}
+
+.scenario-card.rendita {
+    background: rgba(230, 194, 0, 0.06);
+    border-color: rgba(230, 194, 0, 0.3);
+}
+
+.scenario-badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.scenario-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+.scenario-card.proprieta .scenario-title {
+    color: var(--color-blue);
+}
+
+.scenario-card.risparmio .scenario-title {
+    color: var(--color-green);
+}
+
+.scenario-card.rendita .scenario-title {
+    color: #8a7400;
+}
+
+.scenario-desc {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+}
+
+.scenario-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.scenario-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.82rem;
+}
+
+.scenario-metric:last-child {
+    border-bottom: none;
+}
+
+.scenario-metric.highlight {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.75rem;
+    border-bottom: none;
+    margin-top: 0.25rem;
+}
+
+.s-metric-label {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    flex: 1;
+}
+
+.s-metric-value {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.scenario-card.proprieta .scenario-metric.highlight .s-metric-value {
+    color: var(--color-blue);
+}
+
+.scenario-card.risparmio .scenario-metric.highlight .s-metric-value {
+    color: var(--color-green);
+}
+
+.scenario-card.rendita .scenario-metric.highlight .s-metric-value {
+    color: #8a7400;
+}
+
+.scenario-note {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+    font-style: italic;
+}
+
+/* ─── EMAIL CTA SECTION ─────────────────────────────────────────────────── */
+.email-cta-section {
+    background: var(--color-neutral);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    margin-top: 1.5rem;
+    border: 1px solid var(--color-border);
+}
+
+.email-cta-copy p {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+}
+
+.email-optional-fields {
+    margin-bottom: 1.25rem;
+}
+
+.email-address-hint {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 0.75rem;
+}
+
+.email-address-hint a {
+    color: var(--color-blue);
+    font-weight: 600;
+    transition: color var(--transition);
+}
+
+.email-address-hint a:hover {
+    color: var(--color-green);
+}
+
+/* ─── ANIMATION ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    #hero-simulatore {
+        min-height: 38vh;
+    }
+
+    .estimator-form-col {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .results-container {
+        padding: 1.5rem 1.25rem;
+    }
+
+    #estimator-area {
+        padding: 2rem 0 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .scenario-metric {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+    }
+
+    .s-metric-value {
+        text-align: left;
+    }
+}
+
+/* ─── PUN NOTICE (inline warning when default is used at submit) ─────────── */
+.form-notice-pun {
+    background: rgba(230, 194, 0, 0.1);
+    border: 1px solid rgba(230, 194, 0, 0.4);
+    border-radius: var(--radius);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.78rem;
+    color: #6b5800;
+    line-height: 1.5;
+}
+
+/* PUN badge loading state */
+.pun-badge.pun-loading {
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ─── SCENARIO PRO / CONS LISTS ─────────────────────────────────────────── */
+.scenario-procons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1rem;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius);
+}
+
+.procons-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+}
+
+.procons-list li {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--color-text);
+    padding-left: 1.1rem;
+    position: relative;
+}
+
+.procons-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.38em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.procons-pro li::before {
+    background: var(--color-green);
+}
+
+.procons-con li::before {
+    background: #dc2626;
+}
+
+@media (max-width: 480px) {
+    .scenario-procons {
+        grid-template-columns: 1fr;
+    }
+}
+/* ─── DATA CARDS (PUN + PVGIS shown after submit) ──────────────────────── */
+.data-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.data-card {
+    background: var(--color-neutral);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+}
+
+.data-card-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.3rem;
+}
+
+.data-card-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-blue);
+    line-height: 1.1;
+}
+
+.data-card-unit {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 480px) {
+    .data-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}

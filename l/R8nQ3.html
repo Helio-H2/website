@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <title>HelioH&#x2082; &ndash; Redirecting</title>
+  <script>
+    const key = location.pathname.split('/').pop().replace('.html', '');
+    fetch('links.json')
+      .then(r => r.json())
+      .then(data => {
+        if (data[key]) {
+          window.location.replace(data[key]);
+        }
+      })
+      .catch(() => { });
+  </script>
+</head>
+</html>
