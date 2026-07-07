@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Stima il valore del tuo impianto fotovoltaico con il simulatore gratuito di HelioH&#x2082;. Nessun form, nessuna attesa.">
+    <title>HelioH&#x2082; &ndash; Simulatore Solare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="j/simulatore.css">
+    <link rel="icon" type="image/x-icon" href="s/favicon.ico">
+    <script src="j/structure.js"></script>
+    <script src="j/pun-fetch.js"></script>
+    <script src="j/pvgis-fetch.js"></script>
+    <script src="j/address-fetch.js"></script>
+    <script src="j/simulatore.js"></script>
+</head>
+
+<body>
+
+    <!-- Header container (loaded via JS) -->
+    <div id="header-container"></div>
+
+    <!-- ══ HERO SIMULATORE ══════════════════════════════════════════════════ -->
+    <section id="hero-simulatore">
+        <div class="hero-content">
+            <span class="hero-tag">Simulatore Gratuito</span>
+            <h1 class="fade-in-2">Scopri il valore<br>del tuo impianto</h1>
+            <p class="hero-subtitle fade-in-3">
+                Inserisci i dati della tua propriet&agrave; e ottieni in pochi secondi una stima della
+                producibilit&agrave; e dei ricavi. Nessuna registrazione, nessun form.
+            </p>
+        </div>
+    </section>
+
+    <!-- ══ TOOL SWITCHER ════════════════════════════════════════════════════ -->
+    <section id="tool-switcher">
+        <div class="container">
+            <div class="tool-tabs" role="tablist">
+                <button class="tool-tab" id="tab-indipendente" role="tab" aria-selected="false"
+                    aria-controls="panel-indipendente" onclick="switchTool('solind')">
+                    <span class="tool-tab-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                        </svg>
+                    </span>
+                    <span class="tool-tab-label">Soluzioni Indipendenti</span>
+                    <span class="tool-tab-sub">Terreni e impianti a terra</span>
+                </button>
+                <button class="tool-tab" id="tab-integrata" role="tab" aria-selected="false"
+                    aria-controls="panel-integrata" onclick="switchTool('solint')">
+                    <span class="tool-tab-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </span>
+                    <span class="tool-tab-label">Soluzioni Integrate</span>
+                    <span class="tool-tab-sub">Aziende e tetti industriali</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ MAIN ESTIMATOR AREA ══════════════════════════════════════════════ -->
+    <section id="estimator-area">
+        <div class="container">
+
+            <!-- Default state: no tool selected -->
+            <div id="panel-default" class="panel-default">
+                <div class="default-cta-grid">
+                    <a href="?t=solind" class="default-cta-card blue"
+                        onclick="event.preventDefault(); switchTool('solind')">
+                        <div class="default-cta-icon">&#x1F331;</div>
+                        <h3>Sono un proprietario terriero</h3>
+                        <p>Voglio valorizzare il mio terreno con un impianto standalone e scoprire i ricavi potenziali.
+                        </p>
+                        <span class="btn btn-primary mt-3">Inizia la stima &rarr;</span>
+                    </a>
+                    <a href="?t=solint" class="default-cta-card green"
+                        onclick="event.preventDefault(); switchTool('solint')">
+                        <div class="default-cta-icon">&#x1F3ED;</div>
+                        <h3>Sono un&#39;azienda</h3>
+                        <p>Voglio ridurre i costi energetici o generare rendita dal mio tetto o terreno aziendale.</p>
+                        <span class="btn btn-secondary mt-3">Inizia la stima &rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── PANEL: SOLUZIONI INDIPENDENTI ─────────────────────────── -->
+            <div id="panel-indipendente" class="estimator-panel" role="tabpanel" aria-labelledby="tab-indipendente"
+                hidden>
+
+                <div class="estimator-layout">
+                    <!-- FORM COLUMN -->
+                    <div class="estimator-form-col">
+                        <div class="form-header">
+                            <span class="accent-bar"></span>
+                            <h2>Stima Soluzioni Indipendenti</h2>
+                            <p>Inserisci i dati del tuo terreno per ricevere una stima della producibilit&agrave; e dei
+                                ricavi annuali.</p>
+                        </div>
+
+                        <form id="form-indipendente" class="estimator-form" novalidate>
+
+                            <div class="form-group">
+                                <label class="form-label" for="ind-citta">Indirizzo (non inserire il civico) <span
+                                        class="required">*</span></label>
+                                <input type="text" id="ind-citta" name="citta" class="form-input address-autocomplete"
+                                    placeholder="Es. Moncalieri, Torino" required autocomplete="off">
+                                <div id="ind-citta-results" class="autocomplete-results"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="ind-superficie">Superficie disponibile (m&sup2;) <span
+                                        class="required">*</span></label><span class="form-hint">Area complessiva del
+                                    terreno destinabile all&#39;impianto</span>
+                                <input type="number" id="ind-superficie" name="superficie" class="form-input"
+                                    placeholder="Es. 5000" min="100" max="1000000" required>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="ind-terreno">Tipo di terreno</label>
+                                    <select id="ind-terreno" name="terreno" class="form-input">
+                                        <option value="piano">Terreno pianeggiante</option>
+                                        <option value="pendenza">Pendenza media</option>
+                                        <option value="ombra">Zone ombreggiate</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="ind-rete">Connesso alla rete</label>
+                                    <select id="ind-rete" name="rete" class="form-input">
+                                        <option value="si">S&igrave;</option>
+                                        <option value="no">No</option>
+                                        <option value="nonso">Non so</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="ind-affitto-slider">
+                                    Contratto di affitto su fatturato &mdash; <span
+                                        id="ind-affitto-label">10%</span>
+                                </label>
+                                <span class="form-hint">Percentuale del fatturato annuale dell&apos;impianto
+                                    riconosciuta al proprietario del terreno</span>
+                                <input type="range" id="ind-affitto-slider" name="affitto" class="form-range"
+                                    min="1" max="30" step="1" value="10"
+                                    oninput="document.getElementById('ind-affitto-label').textContent = this.value + '%'">
+                                <div class="range-bounds">
+                                    <span>1%</span>
+                                    <span>30%</span>
+                                </div>
+                            </div>
+
+                            <div id="ind-error" class="form-error" hidden></div>
+
+                            <button type="submit" class="btn btn-primary btn-block" id="ind-submit">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                Calcola la stima
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- RESULTS COLUMN -->
+                    <div class="estimator-results-col">
+                        <div id="ind-placeholder" class="results-placeholder">
+                            <div class="placeholder-icon">&#x2600;&#xFE0F;</div>
+                            <p>Compila il modulo per vedere la stima del tuo impianto</p>
+                        </div>
+
+                        <div id="ind-loading" class="results-loading" hidden>
+                            <div class="loading-spinner"></div>
+                            <p>Recupero dati&hellip;</p>
+                        </div>
+
+                        <div id="ind-data-cards" class="data-cards" hidden>
+                            <div class="data-card">
+                                <div class="data-card-label">PUN zona</div>
+                                <div class="data-card-value" id="ind-pun-value">&mdash;</div>
+                                <div class="data-card-unit">&euro;/kWh</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-card-label">Irradiazione PVGIS</div>
+                                <div class="data-card-value" id="ind-irr-value">&mdash;</div>
+                                <div class="data-card-unit">kWh/kWp/anno</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-card-label">Zona mercato</div>
+                                <div class="data-card-value" id="ind-zone-value">&mdash;</div>
+                                <div class="data-card-unit">ENTSO-E</div>
+                            </div>
+                        </div>
+
+                        <div id="ind-results" class="results-container" hidden>
+                            <div class="results-header">
+                                <span class="section-label">Risultati stima</span>
+                                <h3 id="ind-res-title">Impianto a <span id="ind-res-citta"></span></h3>
+                                <p class="pvgis-badge" id="ind-pvgis-badge"></p>
+                            </div>
+
+                            <div class="metrics-grid">
+                                <div class="metric-card blue">
+                                    <div class="metric-label">Capacit&agrave; stimata</div>
+                                    <div class="metric-value" id="ind-kwp">&mdash;</div>
+                                    <div class="metric-unit">kWp</div>
+                                </div>
+                                <div class="metric-card green">
+                                    <div class="metric-label">Produzione annuale</div>
+                                    <div class="metric-value" id="ind-kwh">&mdash;</div>
+                                    <div class="metric-unit">kWh/anno</div>
+                                </div>
+                                <div class="metric-card yellow">
+                                    <div class="metric-label">Ricavi annuali</div>
+                                    <div class="metric-value" id="ind-revenue">&mdash;</div>
+                                    <div class="metric-unit">&euro;/anno</div>
+                                </div>
+                                <div class="metric-card green">
+                                    <div class="metric-label">Affitto annuale stimato</div>
+                                    <div class="metric-value" id="ind-affitto">&mdash;</div>
+                                    <div class="metric-unit">&euro;/anno</div>
+                                </div>
+                            </div>
+
+                            <!-- EMAIL CTA -->
+                            <div class="email-cta-section">
+                                <div class="email-cta-copy">
+                                    <p>Tutti sanno che la compilazione di un form &egrave; una perdita di tempo.<br>
+                                        Ti invitiamo quindi a scriverci direttamente: inserisci nome e telefono se vuoi
+                                        e poi premi il pulsante in basso.</p>
+                                    <span class="form-hint">Inserisci il cellulare solo se preferisci che ti chiamiamo,
+                                        altrimenti non compilare il campo, che noi non ce ne facciamo nulla 😁</span>
+                                </div>
+
+                                <div class="email-optional-fields">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ind-nome">Nome (facoltativo)</label>
+                                            <input type="text" id="ind-nome" class="form-input"
+                                                placeholder="Il tuo nome">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="ind-telefono">Telefono (facoltativo)</label>
+                                            <input type="tel" id="ind-telefono" class="form-input"
+                                                placeholder="+39 &hellip;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-secondary btn-block" onclick="openEmailIndipendente()">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    Scrivici via email
+                                </button>
+                                <button class="btn btn-secondary btn-block" onclick="openWhatsappIndipendente()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                                        <path
+                                            d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.057 23.184a.75.75 0 0 0 .923.923l5.325-1.475A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.683-.51-5.22-1.4l-.374-.218-3.878 1.074 1.074-3.878-.218-.374A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+                                    </svg>
+                                    Scrivici su whatsapp
+                                </button>
+                            </div>
+                        </div><!-- /int-results -->
+                    </div>
+                </div>
+            </div><!-- /panel-indipendente -->
+
+            <!-- ── PANEL: SOLUZIONI INTEGRATE ─────────────────────────────── -->
+            <div id="panel-integrata" class="estimator-panel" role="tabpanel" aria-labelledby="tab-integrata" hidden>
+
+                <div class="estimator-layout">
+                    <!-- FORM COLUMN -->
+                    <div class="estimator-form-col">
+                        <div class="form-header">
+                            <span class="accent-bar"></span>
+                            <h2>Stima Soluzioni Integrate</h2>
+                            <p>Calcola il risparmio e la rendita del tuo impianto aziendale nei tre scenari
+                                HelioH&#x2082;.</p>
+                        </div>
+
+                        <form id="form-integrata" class="estimator-form" novalidate>
+
+                            <div class="form-group">
+                                <label class="form-label" for="int-citta">Indirizzo (non inserire il civico) <span
+                                        class="required">*</span></label>
+                                <input type="text" id="int-citta" name="citta" class="form-input address-autocomplete"
+                                    placeholder="Es. Milano, MI" required autocomplete="off">
+                                <div id="int-citta-results" class="autocomplete-results"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="int-superficie">Superficie (m&sup2;) <span
+                                            class="required">*</span></label>
+                                    <input type="number" id="int-superficie" name="superficie" class="form-input"
+                                        placeholder="Es. 1500" min="50" max="500000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="int-edificio">Tipologia edificio</label>
+                                    <select id="int-edificio" name="edificio" class="form-input">
+                                        <option value="uffici">Uffici</option>
+                                        <option value="manifattura">Manifattura</option>
+                                        <option value="warehouse">Warehouse / Logistica</option>
+                                        <option value="retail">Retail / GDO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="int-tetto">Condizioni tetto/area</label>
+                                <select id="int-tetto" name="tetto" class="form-input">
+                                    <option value="buone">Buone &ndash; pronto per l&#39;installazione</option>
+                                    <option value="verifica">Necessita verifiche strutturali</option>
+                                    <option value="nonso">Non so</option>
+                                </select>
+                            </div>
+
+                            <div class="form-section-title">Tariffe dalla bolletta</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="int-componente">Energia
+                                        <span class="required">*</span></label>
+                                    <input type="number" id="int-componente" name="componente" class="form-input"
+                                        placeholder="€ al kWh" min="1" max="1" step="0.001" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="int-oneri">Oneri<span
+                                            class="required">*</span></label>
+                                    <input type="number" id="int-oneri" name="oneri" class="form-input"
+                                        placeholder="€ al kWh" min="0" max="1" step="0.001" required>
+                                </div>
+                            </div>
+
+                            <!-- CONSUMO TOGGLE -->
+                            <div class="form-section-title">Consumo energetico annuale</div>
+                            <div class="consumption-toggle">
+                                <label class="toggle-option">
+                                    <input type="radio" name="consumo-type" value="totale" checked
+                                        onchange="toggleConsumptionMode('totale')">
+                                    <span class="toggle-label">Ho il totale annuo</span>
+                                </label>
+                                <label class="toggle-option">
+                                    <input type="radio" name="consumo-type" value="f1f2f3"
+                                        onchange="toggleConsumptionMode('f1f2f3')">
+                                    <span class="toggle-label">Ho i dati F1/F2/F3</span>
+                                </label>
+                            </div>
+
+                            <div id="consumo-totale-block" class="form-group">
+                                <label class="form-label" for="int-consumo-tot">Consumo annuale totale (kWh) <span
+                                        class="required">*</span></label>
+                                <input type="number" id="int-consumo-tot" name="consumo-tot" class="form-input"
+                                    placeholder="Es. 180000" min="1000" required>
+                                <span class="form-hint">Indica la percentuale stimata di consumo in orario
+                                    diurno.</span>
+                                <div class="range-wrap">
+                                    <input type="range" id="int-consumo-slider" name="consumo" class="form-range"
+                                        min="0" max="100" step="1" value="60" oninput="
+                                        if (this.style.accentColor == 'var(--color-gray-600)')
+                                            this.style.accentColor = 'var(--color-blue)';
+                                        if (this.value < 25) { 
+                                            this.value = 25; 
+                                            this.style.accentColor = 'var(--color-gray-600)' }
+                                            else  
+                                            updateRangeCallout(this, 'int-consumo-label', '%');">
+                                    <span id="int-consumo-label" class="range-callout">60%</span>
+                                    <div class="range-bounds">
+                                        <span>0%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="consumo-f1f2f3-block" class="form-group-stack" hidden>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="int-f1">F1</label>
+                                        <input type="number" id="int-f1" name="f1" class="form-input"
+                                            placeholder="   kWh" min="0">
+                                        <div class="input-note">la F1 va dalle 8:00 alle 19:00 dal luned&igrave; al
+                                            venerd&igrave;</div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="int-f2">F2</label>
+                                        <input type="number" id="int-f2" name="f2" class="form-input"
+                                            placeholder="   kWh" min="0">
+                                        <div class="input-note">la F2 va dalle 7:00 alle 23:00 dal luned&igrave; al
+                                            sabato, escluse le ore in F1</div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="int-f3">F3</label>
+                                        <input type="number" id="int-f3" name="f3" class="form-input"
+                                            placeholder="   kWh" min="0">
+                                        <div class="input-note">La F3 &egrave; sempre valida dalle 23.00 alle 07.00
+                                            dal luned&igrave; al sabato. Domenica, tutto il giorno</div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="int-error" class="form-error" hidden></div>
+
+                            <button type="submit" class="btn btn-secondary btn-block" id="int-submit">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                Calcola i tre scenari
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- RESULTS COLUMN -->
+                    <div class="estimator-results-col">
+                        <div id="int-placeholder" class="results-placeholder">
+                            <div class="placeholder-icon">&#x1F3D7;&#xFE0F;</div>
+                            <p>Compila il modulo per confrontare i tre scenari di investimento</p>
+                        </div>
+
+                        <div id="int-loading" class="results-loading" hidden>
+                            <div class="loading-spinner"></div>
+                            <p>Recupero dati&hellip;</p>
+                        </div>
+
+                        <div id="int-data-cards" class="data-cards" hidden>
+                            <div class="data-card">
+                                <div class="data-card-label">PUN zona</div>
+                                <div class="data-card-value" id="int-pun-value">&mdash;</div>
+                                <div class="data-card-unit">&euro;/kWh</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-card-label">Irradiazione PVGIS</div>
+                                <div class="data-card-value" id="int-irr-value">&mdash;</div>
+                                <div class="data-card-unit">kWh/kWp/anno</div>
+                            </div>
+                            <div class="data-card">
+                                <div class="data-card-label">Zona mercato</div>
+                                <div class="data-card-value" id="int-zone-value">&mdash;</div>
+                                <div class="data-card-unit">ENTSO-E</div>
+                            </div>
+                        </div>
+
+                        <div id="int-results" class="results-container" hidden>
+                            <div class="results-header">
+                                <span class="section-label">Risultati stima</span>
+                                <h3>Impianto a <span id="int-res-citta"></span></h3>
+                                <p class="pvgis-badge" id="int-pvgis-badge"></p>
+                            </div>
+
+                            <!-- Summary metrics -->
+                            <div class="metrics-grid metrics-grid-2">
+                                <div class="metric-card blue">
+                                    <div class="metric-label">Capacit&agrave; stimata</div>
+                                    <div class="metric-value" id="int-kwp">&mdash;</div>
+                                    <div class="metric-unit">kWp</div>
+                                </div>
+                                <div class="metric-card green">
+                                    <div class="metric-label">Produzione annuale</div>
+                                    <div class="metric-value" id="int-kwh">&mdash;</div>
+                                    <div class="metric-unit">kWh/anno</div>
+                                </div>
+                            </div>
+
+                            <!-- THREE SCENARIO CARDS -->
+                            <div class="scenario-cards">
+
+                                <!-- SCENARIO 1: PROPRIETA -->
+                                <div class="scenario-card proprieta">
+                                    <div class="scenario-badge">Scenario 1</div>
+                                    <h4 class="scenario-title">Propriet&agrave;</h4>
+                                    <p class="scenario-desc">L&#39;azienda acquista e possiede l&#39;impianto al 100%
+                                    </p>
+                                    <div class="scenario-metrics">
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Investimento azienda</span>
+                                            <span class="s-metric-value" id="int-p-capex">&mdash;</span>
+                                        </div>
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Beneficio annuale complessivo tra autoconsumo e
+                                                ritiro dedicato</span>
+                                            <span class="s-metric-value" id="int-p-revenue">&mdash;</span>
+                                        </div>
+                                    </div>
+                                    <div class="scenario-procons">
+                                        <ul class="procons-list procons-pro">
+                                            <li>Massimo controllo sull&#39;impianto</li>
+                                            <li>Incentivi fiscali applicabili</li>
+                                            <li>Asset patrimoniale aziendale implementabile con batterie</li>
+                                            <li>Beneficio molto alto tra autoconsumo e vendita diretta</li>
+                                            <li>Pianificazione dei consumi possibile</li>
+                                            <li>Possibilit&agrave; di acquisto con Noleggio Operativo o Leasing</li>
+                                        </ul>
+                                        <ul class="procons-list procons-con">
+                                            <li>Investimento iniziale elevato</li>
+                                            <li>Gestione operativa a carico</li>
+                                            <li>Rischio tecnologico nel tempo</li>
+                                            <li>Riduzione dei consumi dalla rete con potenziale perdita di eventuali
+                                                scontisiche</li>
+                                        </ul>
+                                    </div>
+                                    <div class="scenario-note">Verificare superammortamento e detrazioni fiscali con il
+                                        proprio commercialista.</div>
+                                </div>
+
+                                <!-- SCENARIO 2: RISPARMIO -->
+                                <div class="scenario-card risparmio">
+                                    <div class="scenario-badge">Scenario 2</div>
+                                    <h4 class="scenario-title">Risparmio</h4>
+                                    <p class="scenario-desc">HelioH&#x2082; installa, l&#39;azienda risparmia
+                                        acquistando energia ad un prezzo scontato</p>
+                                    <div class="scenario-metrics">
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Investimento azienda</span>
+                                            <span class="s-metric-value">&mdash;</span>
+                                        </div>
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Risparmio annuale atteso</span>
+                                            <span class="s-metric-value" id="int-r-savings">&mdash;</span>
+                                        </div>
+                                    </div>
+                                    <div class="scenario-procons">
+                                        <ul class="procons-list procons-pro">
+                                            <li>Risparmio immediato in bolletta</li>
+                                            <li>Manutenzione a carico HelioH&#x2082;</li>
+                                            <li>Possibilit&agrave; di aggiungere le batterie</li>
+                                            <li>Contratto di lunga durata con sconto percentuale</li>
+                                            <li>Nessun ammortamento o esborso iniziale</li>
+                                            <li>Pianificazione dei consumi possibile</li>
+                                        </ul>
+                                        <ul class="procons-list procons-con">
+                                            <li>Dipendenza contrattuale</li>
+                                            <li>Riduzione dei consumi dalla rete con potenziale perdita di eventuali
+                                                scontisiche</li>
+                                            <li>Benefici diretti da consumo energia e non da vendita di eccedenza</li>
+                                        </ul>
+                                    </div>
+                                    <div class="scenario-note">HelioH&#x2082; gestisce e mantiene l&#39;impianto.
+                                        L&#39;azienda paga solo la quota energia
+                                        consumata ad un prezzo scontato. Inoltre, maggiore saranno i consumi durante la
+                                        fascia oraria produttiva, pi&ugrave; grande sar&agrave; il risparmio.</div>
+                                </div>
+
+                                <!-- SCENARIO 3: RENDITA -->
+                                <div class="scenario-card rendita">
+                                    <div class="scenario-badge">Scenario 3</div>
+                                    <h4 class="scenario-title">Rendita</h4>
+                                    <p class="scenario-desc">HelioH&#x2082; installa l'impianto, l&#39;azienda ospita e
+                                        incassa un affitto proporzionale alla produzione diretta al GSE.</p>
+                                    <div class="scenario-metrics">
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Investimento azienda</span>
+                                            <span class="s-metric-value">&mdash;</span>
+                                        </div>
+                                        <div class="scenario-metric">
+                                            <span class="s-metric-label">Rendita annuale lorda attesa</span>
+                                            <span class="s-metric-value" id="int-rend-revenue">&mdash;</span>
+                                        </div>
+                                    </div>
+                                    <div class="scenario-procons">
+                                        <ul class="procons-list procons-pro">
+                                            <li>Nessun investimento richiesto e zero rischio operativo</li>
+                                            <li>I consumi non diminuiscono a favore del mantenimento degli accordi con
+                                                il distributore di rete</li>
+                                            <li>Rendita da affitto, vincolata alla produzione dell'impianto</li>
+                                            <li>Beneficio indiretto su mitigazione all'innalzamento dei prezzi di
+                                                mercato</li>
+                                            <li>Produzione non vincolata all'autoconsumo e all'operativit&agrave;
+                                                dell'azienda. L'impianto funziona anche di Domenica.</li>
+                                        </ul>
+                                        <ul class="procons-list procons-con">
+                                            <li>Beneficio economico pi&ugrave; limitato rispetto agli altri scenari</li>
+                                            <li>Non abbinabile con le batterie</li>
+                                            <li>Nessuna pianificazione di consumo attuabile</li>
+                                        </ul>
+                                    </div>
+                                    <div class="scenario-note">Questo &egrave; uno scenario ideale per chi ha gi&agrave;
+                                        accordi con il proprio distributore ed una scontistica gi&agrave; in atto. Al
+                                        risparmio concordato,
+                                        si pu&ograve; aggiungere quindi una rendita da locazione, con un canone
+                                        vincolato alla produzione e quindi al fatturato. Anche quando si &egrave; chiusi
+                                        per festivit&agrave; o riposo
+                                        settimanale, l'impianto continua a produrre e il locatario riceve la sua fetta.
+                                    </div>
+                                </div>
+
+                            </div><!-- /scenario-cards -->
+
+                            <div class="assumptions-note">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Stima indicativa. Le assunzioni:Capex: <span id="int-b-capex"></span>/kWp
+                                (Propriet&agrave;). Sconto: <span id="int-scontoRisparmio">30</span>% (Risparmio).
+                                Affitto: <span id="int-rentiRendita">20</span>% (rendita). I valori dipendono da
+                                irraggiamento, configurazione e incentivi vigenti.
+                            </div>
+
+                            <!-- EMAIL CTA -->
+                            <div class="email-cta-section">
+                                <div class="email-cta-copy">
+                                    <p>Tutti sanno che la compilazione di un form &egrave; una perdita di tempo.<br>
+                                        Ti invitiamo quindi a scriverci direttamente: inserisci nome e telefono se vuoi
+                                        e poi premi il pulsante in basso.</p>
+                                    <span class="form-hint">Inserisci il cellulare solo se preferisci che ti chiamiamo,
+                                        altrimenti non compilare il campo, che noi non ce ne facciamo nulla 😁</span>
+                                </div>
+
+                                <div class="email-optional-fields">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label" for="int-nome">Nome (facoltativo)</label>
+                                            <input type="text" id="int-nome" class="form-input"
+                                                placeholder="Il tuo nome">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="int-telefono">Telefono (facoltativo)</label>
+                                            <input type="tel" id="int-telefono" class="form-input"
+                                                placeholder="+39 &hellip;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-secondary btn-block" onclick="openEmailIntegrata()">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    Scrivici via email
+                                </button>
+                                <button class="btn btn-secondary btn-block" onclick="openWhatsappIntegrata()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                                        <path
+                                            d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.057 23.184a.75.75 0 0 0 .923.923l5.325-1.475A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.683-.51-5.22-1.4l-.374-.218-3.878 1.074 1.074-3.878-.218-.374A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+                                    </svg>
+                                    Scrivici su whatsapp
+                                </button>
+                            </div>
+                        </div><!-- /int-results -->
+                    </div>
+                </div>
+            </div><!-- /panel-integrata -->
+
+        </div><!-- /container -->
+    </section>
+
+    <!-- Footer container (loaded via JS) -->
+    <div id="contatti"></div>
+
+</body>
+
+</html>

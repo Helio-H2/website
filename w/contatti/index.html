@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--
+  HelioH₂ - Samaritan Interface v2.0
+-->
+<html lang="it">
+
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contatta il team di HelioH₂ per informazioni su impianti fotovoltaici indipendenti e soluzioni integrate per aziende.">
+  <title>HelioH&#x2082; &ndash; Contatti</title>
+  <!--link rel="preconnect" href="https://fonts.gstatic.com" crossorigin-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="j/contatti.css">
+  <link rel="icon" type="image/x-icon" href="s/favicon.ico">
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- -- Top status bar -- -->
+    <header class="topbar">
+      <div class="topbar-group">
+        <span><span class="dot"></span>&nbsp; SISTEMA ATTIVO</span>
+        <span id="t-time">--:--:--</span>
+      </div>
+      <div class="topbar-group">
+        <span>HELIOH<sub>2</sub> SYSTEM v2.0</span>
+        <span>CONNESSIONE SICURA</span>
+      </div>
+    </header>
+
+    <!-- -- Main stage -- -->
+    <main class="stage">
+      <div class="brk tl"></div>
+      <div class="brk tr"></div>
+      <div class="brk bl"></div>
+      <div class="brk br"></div>
+
+      <!-- Brand mark - always visible -->
+      <div class="brand" id="brand">
+        <span class="brand-name">Helio<span>H<sub>2</sub></span></span>
+        <span class="brand-line"></span>
+        <div class="brand-tri">
+          <svg viewBox="0 0 20 17" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polygon points="10,0 20,17 0,17" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Boot sequence -->
+      <div id="boot">
+        <span class="bl" id="b1">INIZIALIZZAZIONE SISTEMA HELIOH<sub>2</sub></span>
+        <span class="bl" id="b2">PROTOCOLLI DI SICUREZZA: <span class="g">ATTIVI</span></span>
+        <span class="bl" id="b3">CONNESSIONE CRITTOGRAFATA: <span class="g">VERIFICATA</span></span>
+        <span class="bl" id="b4">AUTENTICAZIONE UTENTE IN CORSO</span>
+        <div class="pbar" id="pbar">
+          <div class="pfill" id="pfill"></div>
+        </div>
+        <span class="bl r w" id="b5">ACCESSO CONCESSO</span>
+      </div>
+
+      <!-- Query interface -->
+      <div id="qi">
+        <div class="qi-label">&#9656; INTERFACCIA UTENTE ATTIVA &#9666;</div>
+        <div class="qi-line">
+          <span class="qi-prompt">&gt;</span>
+          <span class="qi-text" id="qt"></span>
+          <span class="qi-cur" id="qcur"></span>
+        </div>
+        <div class="opts" id="opts">
+          <button class="opt" onclick="pick('fatturazione')">
+            <span class="opt-n">[ 01 ]</span>
+            <span class="opt-l">Dati di Fatturazione</span>
+            <span class="opt-a">&rarr;</span>
+          </button>
+          <button class="opt" onclick="pick('contatti')">
+            <span class="opt-n">[ 02 ]</span>
+            <span class="opt-l">Contatti Aziendali</span>
+            <span class="opt-a">&rarr;</span>
+          </button>
+          <button class="opt" onclick="pick('org')">
+            <span class="opt-n">[ 03 ]</span>
+            <span class="opt-l">Organizzazione</span>
+            <span class="opt-a">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Result area -->
+      <div id="ra">
+
+        <!-- -- 01 FATTURAZIONE -- -->
+        <div class="rsec" id="rs-fatturazione">
+          <div class="rsec-head">
+            <span class="rtag">Classificato</span>
+            <span class="rtitle">Dati di Fatturazione</span>
+            <button class="rback" onclick="back()">&larr; Indietro</button>
+          </div>
+          <table class="dtable" aria-label="Dati di fatturazione">
+            <tr>
+              <td>Ragione Sociale</td>
+              <td class="hi">HelioH<sub>2</sub> S.r.l.</td>
+            </tr>
+            <tr>
+              <td>Forma Giuridica</td>
+              <td>Societ&agrave; a Responsabilit&agrave; Limitata</td>
+            </tr>
+            <tr>
+              <td>Partita IVA</td>
+              <td>IT13333950015</td>
+            </tr>
+            <tr>
+              <td>PEC</td>
+              <td><a href="mailto:helioh2@pec.it">helioh2@pec.it</a></td>
+            </tr>
+            <tr>
+              <td>IBAN</td>
+              <td>IT43Q0326822300052916125810</td>
+            </tr>
+            <tr>
+              <td>Banca</td>
+              <td>Banca Sella S.p.A.</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- -- 02 CONTATTI -- -->
+        <div class="rsec" id="rs-contatti">
+          <div class="rsec-head">
+            <span class="rtag">Verificato</span>
+            <span class="rtitle">Contatti Aziendali</span>
+            <button class="rback" onclick="back()">&larr; Indietro</button>
+          </div>
+          <div class="cgrid">
+            <div class="cblock">
+              <div class="ci">
+                <span class="ci-lbl">Codice Fiscale / Partita IVA</span>
+                <span class="ci-val">IT13333950015</span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Codice REA</span>
+                <span class="ci-val">TO-1355800</span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Capitale Sociale</span>
+                <span class="ci-val">35.000&euro;</span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Indirizzo</span>
+                <span class="ci-val">strada delle Finanze 19 bis<br>10024 Moncalieri (TO), Italia</span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Telefono</span>
+                <span class="ci-val"><a href="tel:+393931580197">+393755853424</a></span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Email</span>
+                <span class="ci-val"><a href="mailto:gabriel@helioh2.com">info@helioh2.com</a></span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Web</span>
+                <span class="ci-val"><a href="https://www.helioh2.com" target="_blank"
+                    rel="noopener noreferrer">www.helioh2.com</a></span>
+              </div>
+              <div class="ci">
+                <span class="ci-lbl">Settore</span>
+                <span class="ci-val">Energia Rinnovabile - Solare &amp; Idrogeno</span>
+              </div>
+            </div>
+            <div class="mapbox">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d974.6676063771146!2d7.663885254699164!3d45.00029868139517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sit!4v1775521068384!5m2!1sen!2sit"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                title="Mappa sede HelioH₂">
+              </iframe>
+              <div class="map-border"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- -- 03 ORGANIZZAZIONE -- -->
+        <div class="rsec" id="rs-org">
+          <div class="rsec-head">
+            <span class="rtag">Riservato</span>
+            <span class="rtitle">Organizzazione</span>
+            <button class="rback" onclick="back()">&larr; Indietro</button>
+          </div>
+          <div class="pgrid">
+
+            <!-- -- Gabriel Occhino -- -->
+            <div class="pcard">
+              <div class="photo-wrap">
+                <img src="s/images/soci/gabriel.jpeg" alt="Gabriel Occhino" class="person-photo" loading="lazy" data-initials="GO"
+                  data-id="ID-001" onerror="this.onerror=null;this.src=mkAvatar(this.dataset.initials,this.dataset.id)">
+              </div>
+              <div class="pcard-body">
+                <div class="prole">Direttore Esecutivo</div>
+                <div class="pname">Gabriel Occhino</div>
+                <div class="pcts">
+                  <div class="pct"><span class="pct-ic">TEL</span><a href="tel:+393931580197">+39 393 158 0197</a></div>
+                  <div class="pct"><span class="pct-ic">MAIL</span><a
+                      href="mailto:gabriel@helioh2.com">gabriel@helioh2.com</a></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- -- Davide Occhino -- -->
+            <div class="pcard">
+              <div class="photo-wrap">
+                <img src="s/images/soci/davide.jpeg" alt="Davide Occhino" class="person-photo" loading="lazy" data-initials="DO"
+                  data-id="ID-002" onerror="this.onerror=null;this.src=mkAvatar(this.dataset.initials,this.dataset.id)">
+              </div>
+              <div class="pcard-body">
+                <div class="prole">Direttore Operativo</div>
+                <div class="pname">Davide Occhino</div>
+                <div class="pcts">
+                  <div class="pct"><span class="pct-ic">MAIL</span><a
+                      href="mailto:davide@helioh2.com">davide@helioh2.com</a></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- -- Paola Francone -- -->
+            <div class="pcard">
+              <div class="photo-wrap">
+                <img src="s/images/soci/paola.jpeg" alt="Paola Francone" class="person-photo" loading="lazy" data-initials="PF"
+                  data-id="ID-003" onerror="this.onerror=null;this.src=mkAvatar(this.dataset.initials,this.dataset.id)">
+              </div>
+              <div class="pcard-body">
+                <div class="prole">Direttrice Innovazione</div>
+                <div class="pname">Paola Francone</div>
+                <div class="pcts">
+                  <div class="pct"><span class="pct-ic">MAIL</span><a
+                      href="mailto:paola@helioh2.com">paola@helioh2.com</a></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- -- Federico Genesio -- -->
+            <div class="pcard">
+              <div class="photo-wrap">
+                <img src="s/images/soci/federico.jpeg" alt="Federico Genesio" class="person-photo" loading="lazy" data-initials="FG"
+                  data-id="ID-004" onerror="this.onerror=null;this.src=mkAvatar(this.dataset.initials,this.dataset.id)">
+              </div>
+              <div class="pcard-body">
+                <div class="prole">Direttore Tecnico</div>
+                <div class="pname">Federico Genesio</div>
+                <div class="pcts">
+                  <div class="pct"><span class="pct-ic">MAIL</span><a
+                      href="mailto:federico@helioh2.com">federico@helioh2.com</a></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div><!-- /result area -->
+    </main>
+
+    <!-- -- Footer bar -- -->
+    <footer class="footbar">
+      <span>HELIOH<sub>2</sub> - SISTEMA SICURO</span>
+      <span id="t-date">--/--/----</span>
+      <span>SESSION ENCRYPTED</span>
+    </footer>
+
+  </div><!-- /shell -->
+
+  <script src="j/contatti.js"></script>
+
+</body>
+
+</html>

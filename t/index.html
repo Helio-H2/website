@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelioH&#x2082; &ndash; Tools Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="j/auth.css">
+  <link rel="icon" type="image/x-icon" href="s/favicon.ico">
+</head>
+
+<body>
+  <div class="login-container">
+    <h1>HelioH₂</h1>
+
+    <form id="loginForm">
+      <p>Inserisci la password per accedere ai tool</p>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="off" placeholder="••••••••••••••••" />
+      <button type="submit">Entra</button>
+    </form>
+
+    <div id="message" class="msg"></div>
+
+    <div id="locked">
+      <div class="buttons">
+        <a href="/t/solartools/">🔧 SolarTools</a>
+        <a href="/t/keynote/">📊 Presentazioni</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="j/auth.js"></script>
+  <script>
+    if (HelioAuth.isAuthenticated()) {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('locked').style.display = 'block';
+    } else {
+      HelioAuth.handleLogin('loginForm', 'password', 'message', 'locked');
+    }
+  </script>
+</body>
+
+</html>

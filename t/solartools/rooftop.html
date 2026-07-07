@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <base href="/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HelioH&#x2082; &ndash; SolarMap Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="j/rooftop.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <link rel="icon" type="image/x-icon" href="s/favicon.ico">
+  <script src="j/auth.js"></script>
+  <script>HelioAuth.requireAuth();</script>
+</head>
+
+<body>
+
+  <!-- ROW 1: Logo + name only -->
+  <div id="hdr1">
+    <div class="logo">
+      <img src="s/logoN.png" alt="HelioH2" class="logo-img" />
+      <span class="logo-wordmark">HelioH2 <em>Solar Map</em></span>
+    </div>
+  </div>
+
+  <!-- ROW 2: Hamburger · map type · address · draw · measure -->
+  <div id="hdr2">
+
+    <!-- Hamburger (Configura) -->
+    <button id="btnPanel" class="hdr-hamburger" onclick="togglePanel()" title="Configura">
+      <span>
+        <span id="confarrHam">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="0" y1="1" x2="18" y2="1"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="13" x2="18" y2="13"/>
+          </svg>
+        </span>
+        <span id="confarrClose" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+        </span>
+      </span>
+    </button>
+
+    <div class="sep2"></div>
+
+    <!-- Map type (icon only) -->
+    <div class="tile-grp">
+      <button class="tile-btn" id="tSat" onclick="setTile('sat')" title="Satellite">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+      </button>
+      <button class="tile-btn on" id="tStr" onclick="setTile('str')" title="Mappa">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      </button>
+      <button class="tile-btn" id="tCat" onclick="setTile('cat')" title="Catasto">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="1"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="16" x2="22" y2="16"/><line x1="9" y1="2" x2="9" y2="22"/></svg>
+      </button>
+    </div>
+
+    <!-- Address search -->
+    <div id="addrWrap">
+      <input id="addrInput" type="text" placeholder="Cerca indirizzo…"
+        onkeydown="if(event.key==='Enter')searchAddress()" />
+      <button id="addrBtn" onclick="searchAddress()" title="Cerca">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+
+    <div class="sep2"></div>
+
+    <!-- Draw buttons (icon only) -->
+    <button class="draw-pill" id="dRect" onclick="startRect()" title="Rettangolo">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="1" y="1" width="14" height="10" rx="1" />
+      </svg>
+    </button>
+    <button class="draw-pill" id="dPoly" onclick="startPoly()" title="Poligono">
+      <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="8,1 15,6 12,13 4,13 1,6" />
+      </svg>
+    </button>
+
+    <div class="sep2"></div>
+
+    <!-- Measure button (icon only) -->
+    <button class="draw-pill" id="dMeasure" onclick="toggleMeasure()" title="Distanza">
+      <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="1" y1="7" x2="15" y2="7" />
+        <line x1="1" y1="4" x2="1" y2="10" />
+        <line x1="15" y1="4" x2="15" y2="10" />
+        <line x1="5" y1="5.5" x2="5" y2="8.5" />
+        <line x1="8" y1="5.5" x2="8" y2="8.5" />
+        <line x1="11" y1="5.5" x2="11" y2="8.5" />
+      </svg>
+    </button>
+
+    <div id="measureResult" style="display:none"></div>
+  </div>
+
+  <!-- Floating ANNULLA button (appears when drawing/measuring) -->
+  <div id="dStop" style="display:none">
+    <button class="annulla-btn" onclick="stopDraw()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-linecap="round">
+        <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="panel">
+
+    <!-- AREA NAVIGATION -->
+    <div id="pNav">
+      <button class="pnav-btn" id="pNavPrev" onclick="prevArea()" disabled>&#8592;</button>
+      <span id="pNavLabel">Nessuna area</span>
+      <button class="pnav-btn" id="pNavNext" onclick="nextArea()" disabled>&#8594;</button>
+    </div>
+
+    <div id="pScroll">
+
+      <!-- PER-AREA SLIDE (JS rendered) -->
+      <div id="pAreaSlide">
+        <div class="area-empty">Usa i pulsanti "Disegna" per aggiungere un'area</div>
+      </div>
+
+      <!-- GLOBAL SECTIONS -->
+      <div id="pGlobal">
+
+        <!-- PANNELLO -->
+        <details class="psec">
+          <summary class="psec-summary"><span class="slabel">Pannello</span><span class="acc-arrow"></span></summary>
+          <div class="psec-body">
+            <div class="field-row3">
+              <div class="field"><label>Potenza (Wp)</label><input type="number" id="panelWp" value="400" min="100" max="1000" step="1" onchange="recalc()" /></div>
+              <div class="field"><label>Largh. (m)</label><input type="number" id="panelW" value="1.05" step="0.01" min="0.5" max="1.5" onchange="recalc()" /></div>
+              <div class="field"><label>Alt. (m)</label><input type="number" id="panelH" value="1.75" step="0.01" min="1.0" max="2.5" onchange="recalc()" /></div>
+            </div>
+            <div class="panel-area-info" id="pAreaInfo">
+              <div class="pai-empty">Seleziona un'area per vedere azimut e pannelli</div>
+            </div>
+            <div class="panel-params-grid">
+              <input type="number" id="rowsPerString"   value="2" min="1" max="10"  step="1"   onchange="setLayoutParam('rowsPerString',+this.value,1)" />
+              <label for="rowsPerString">Righe per stringa</label>
+              <input type="number" id="stringsPerBlock" value="1" min="1" max="20"  step="1"   onchange="setLayoutParam('stringsPerBlock',+this.value,1)" />
+              <label for="stringsPerBlock">Stringhe per blocco</label>
+              <input type="number" id="stringGap"       value="0" min="0" max="10"  step="0.1" onchange="setLayoutParam('stringGap',+this.value)" />
+              <label for="stringGap">Distanza tra stringhe</label>
+              <input type="number" id="blockGap"        value="5" min="0" max="30"  step="0.1" onchange="setLayoutParam('blockGap',+this.value)" />
+              <label for="blockGap">Distanza tra blocchi</label>
+              <input type="number" id="marginBorder"    value="5" min="0" max="30"  step="0.5" onchange="setLayoutParam('margin',+this.value)" />
+              <label for="marginBorder">Distanza dai confini</label>
+            </div>
+            <button class="draw-panels-btn" id="drawPanelsBtn" onclick="drawPanels()" disabled>⬛ Disegna pannelli nell'area</button>
+          </div>
+        </details>
+
+        <!-- PRODUZIONE E STOCCAGGIO -->
+        <details class="psec">
+          <summary class="psec-summary"><span class="slabel">Produzione e Stoccaggio</span><span class="acc-arrow"></span></summary>
+          <div class="psec-body" id="pProduzioneBody">
+            <div class="pai-empty">Seleziona un'area per calcolare la produzione</div>
+          </div>
+        </details>
+
+        <!-- PREZZI (per area, JS-rendered) -->
+        <details class="psec">
+          <summary class="psec-summary"><span class="slabel">Prezzi &amp; Tariffe</span><span class="acc-arrow"></span></summary>
+          <div class="psec-body" id="pPrezziBody">
+            <div class="pai-empty">Seleziona un'area per inserire i prezzi</div>
+          </div>
+        </details>
+
+        <!-- RIEPILOGO -->
+        <details class="psec">
+          <summary class="psec-summary"><span class="slabel">Riepilogo Complessivo Aree</span><span class="acc-arrow"></span></summary>
+          <div class="psec-body">
+            <div class="sg">
+              <div class="sc"><div class="sv" id="sArea">0</div><div class="sl2">m² totali</div></div>
+              <div class="sc"><div class="sv" id="sPanels">0</div><div class="sl2">Pannelli</div></div>
+              <div class="sc sun"><div class="sv" id="sKwp">0</div><div class="sl2">kWp totali</div></div>
+              <div class="sc sun"><div class="sv" id="sMwh">0</div><div class="sl2">kWh/anno</div></div>
+            </div>
+            <div class="st st-row">
+              <div><div class="sv" id="sCost">€ 0</div><div class="sl2">Costo totale</div></div>
+              <div class="st-sep"></div>
+              <div><div class="sv" id="sCostKwh">—</div><div class="sl2">€ / kWp</div></div>
+            </div>
+            <div class="st revenue"><div class="sv" id="sRevenue">€ 0</div><div class="sl2">Ricavi potenziali / anno</div></div>
+            <div class="st"><div class="sv" id="sPayback">—</div><div class="sl2">Payback stimato (anni)</div></div>
+          </div>
+        </details>
+
+        <button class="clr-btn" onclick="clearAll()">✕ Cancella tutte le aree</button>
+
+      </div><!-- /pGlobal -->
+    </div><!-- /pScroll -->
+
+    <!-- PDF DOWNLOAD FOOTER -->
+    <div id="panelFooter">
+      <button id="btnDownloadPDF" onclick="downloadPDF()" title="Scarica PDF analisi">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6.5 1v7M4 6l2.5 2.5L9 6"/><line x1="1" y1="11" x2="12" y2="11"/>
+        </svg>
+        PDF
+      </button>
+    </div>
+
+  </div>
+
+  <div id="hud" class="hide">
+    <div>
+      <div class="hv" id="hPan">0</div>
+      <div class="hl">Pannelli</div>
+    </div>
+    <div class="hdiv"></div>
+    <div>
+      <div class="hv" id="hKwp">0</div>
+      <div class="hl">kWp</div>
+    </div>
+    <div class="hdiv"></div>
+    <div>
+      <div class="hv" id="hCost">—</div>
+      <div class="hl">Costo k€</div>
+    </div>
+    <div class="hdiv"></div>
+    <div>
+      <div class="hv" id="hRev">—</div>
+      <div class="hl">Ricavi k€</div>
+    </div>
+  </div>
+
+  <div id="notif"><span id="nIco"></span><span id="nTxt"></span></div>
+
+  <!-- ══ SCRIPT ════════════════════════════════════════════════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="j/ade-fetch.js"></script>
+  <script src="j/pun-fetch.js"></script>
+  <script src="j/pvgis-fetch.js"></script>
+  <script src="j/zone-analysis.js"></script>
+  <script src="j/rooftop.js"></script>
+  <script src="j/solartools.js"></script>
+</body>
+
+</html>

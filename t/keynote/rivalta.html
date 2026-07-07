@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="slides-format" content="viewport" />
+  <title>SAIL CER Rivalta & HelioH₂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #04101f;
+      --bg-deep: #020617;
+      --text: #e4f4f9;
+      --text-secondary: #c4e4ec;
+      --text-muted: #a0b8c2;
+      --sky: #38bdf8;
+      --sun: #facc15;
+      --grass: #22c55e;
+      --glass: rgba(4, 24, 38, 0.8);
+      --glass-border: rgba(148, 214, 255, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      opacity: 0;
+      transform: scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(circle at top left, #0ea5e9 0, transparent 40%),
+        radial-gradient(circle at bottom right, #16a34a 0, transparent 45%),
+        radial-gradient(circle at top right, #facc15 0, transparent 45%),
+        linear-gradient(to bottom, var(--bg) 40%, var(--bg-deep) 100%);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .first,
+    .last {
+      background: url(./src/rivalta_orsini.png) center no-repeat;
+      background-size: cover;
+    }
+
+    .first>div,
+    .last>div {
+      background-color: rgba(0, 0, 0, 0.65);
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .content {
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.75rem 4.25rem;
+      /* extra bottom per nav mobile */
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Inter', serif;
+      margin: 0.75 0 0.375rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4.8vw, 2.4rem);
+    }
+
+    p {
+      margin: 0 0 0.7rem;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      line-height: 2;
+      text-align: center;
+    }
+
+    img.topsemicircle {
+      margin-bottom: -50%;
+      object-fit: cover;
+      clip-path: inset(0 0 50% 0);
+    }
+
+    img.bottomsemicircle {
+      margin-top: -50%;
+      object-fit: cover;
+      clip-path: inset(50% 0 0 0);
+    }
+
+    img.backimg {
+      margin-top: -50%;
+      object-fit: cover;
+      opacity: 0.1;
+    }
+
+    .secondary {
+      color: var(--text-secondary);
+      font-size: larger;
+      line-height: 2;
+    }
+
+    .thankyou {
+      font-family: fantasy;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .nolist {
+      list-style: none;
+    }
+
+    .logo img {
+      width: 10%;
+    }
+
+    .qrcode {
+      width: 100px;
+      margin: 10% 25%;
+      border-radius: 15%;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 214, 255, 0.85);
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 1.15rem;
+      padding: 1.1rem 1.3rem;
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.65);
+    }
+
+    .glass ul {
+      list-style: none;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    .nav-controls {
+      position: fixed;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(4, 24, 38, 0.92);
+      border-radius: 999px;
+      padding: 0.35rem 1.2rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.75);
+      font-size: 0.78rem;
+      z-index: 50;
+    }
+
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: none;
+      background: radial-gradient(circle at 30% 30%, rgba(148, 214, 255, 0.4), rgba(15, 23, 42, 0.95));
+      color: #e0f2fe;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.55);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--sky);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .mt-2 {
+      margin-top: 1rem;
+    }
+
+    .mt-3 {
+      margin-top: 1.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 2rem;
+    }
+
+    .mt-6 {
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 1.75rem 1.1rem 4.5rem;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="deck">
+    <!-- Slide 1 -->
+    <section class="slide active first" data-slide="1">
+      <div class="content center">
+        <div class="logo"><img src="http://www.helioh2.com/s/logoC.png" /></div>
+        <div class="pill" style="margin-bottom:1.1rem;">SAIL CER RIVALTA x HELIOH<sub>2</sub></div>
+        <h1
+          style="background:linear-gradient(135deg,#facc15,#fde68a,#bae6fd,#a7f3d0);-webkit-background-clip:text;color:transparent;">
+          Dal sole sopra Rivalta<br />al benessere della comunit&agrave;
+        </h1>
+        <p class="secondary" style="margin:0.85rem auto 0;">
+          Una Comunit&agrave; Energetica che trasforma la <strong>luce</strong> in risorsa concreta per il territorio di
+          Rivalta di Torino.
+        </p>
+        <img class="qrcode" src="src/rivaltaqr.jpg" alt="qrcode" />
+      </div>
+    </section>
+
+    <!-- Slide 2: cos'&egrave; una CER -->
+    <section class="slide" data-slide="2">
+      <div class="content">
+        <h2>Cos&apos;&egrave; una Comunit&agrave; Energetica Rinnovabile?</h2>
+        <p class="secondary">
+          Una CER &egrave; una comunit&agrave; di persone, imprese ed enti pubblici che condividono l&apos;energia
+          immessa in rete da impianti rinnovabili presenti sul territorio, ottenendo incentivi dal GSE per ogni kWh
+          consumato mentre viene prodotto.
+        </p>
+        <div class="grid-3 mt-4">
+          <div class="glass">
+            <h3>🌱 Energia pulita</h3>
+            <p class="muted">
+              Energia a Km0, da impianti nel territorio, consumata da chi abita
+              e lavora sotto la stessa cabina primaria.
+            </p>
+          </div>
+          <div class="glass">
+            <h3>🤝 Valore locale</h3>
+            <p class="muted">
+              Incentivi riconosciuti dal GSE per 20 anni rimangono all&apos;interno
+              della comunit&agrave; che li ha generati.
+            </p>
+          </div>
+          <div class="glass">
+            <h3>🏘️ per la comunit&agrave;</h3>
+            <p class="muted">
+              Ridistribuzione di ricchezza verso i cittadini sotto forma di cashback o investimenti su progetti locali.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: impianto + ripartizione -->
+    <section class="slide" data-slide="3">
+      <div class="content">
+        <h2>Il cuore della CER:<br />l&apos;impianto HelioH<sub>2</sub> a Tetti Francesi</h2>
+        <ol class="muted center mt-2 nolist">
+          <li><strong>55% degli incentivi</strong> viene distribuito ai soci della CER sotto forma di beneficio
+            energetico (cashback).</li>
+          <li><strong>45% degli incentivi</strong> viene destinato a finanziare progetti per la comunit&agrave; (spazi
+            pubblici, iniziative sociali, ecc.).</li>
+          <li>Il Comune, come ente pubblico permette di aumentare la massa di incentivi a favore della cittadinanza.
+          </li>
+        </ol>
+        <div class="glass">
+          <p class="muted center" style="font-size:0.8rem;letter-spacing:0.22em;text-transform:uppercase;">📍 via
+            Fratelli Bandiera 22/50 📍</p>
+          <div class="grid-3" style="gap:0.75rem;margin-top:0.75rem;">
+            <div class="center">
+              <div class="muted" style="font-size:0.8rem;">Produzione annua</div>
+              <div style="font-size:1.35rem;font-weight:700;color:#e0f2fe;">⚡️ 470 MWh</div>
+            </div>
+            <div class="center">
+              <div class="muted" style="font-size:0.8rem;">Pari al consumo di </div>
+              <div style="font-size:1.35rem;font-weight:700;color:#e0f2fe;">🧑‍🧑‍🧒 +1.000 famiglie</div>
+            </div>
+            <div class="center">
+              <div class="muted" style="font-size:0.8rem;">Durata incentivi</div>
+              <div style="font-size:1.35rem;font-weight:700;color:#e0f2fe;">20 anni</div>
+            </div>
+          </div>
+          <p class="muted center" style="margin-top:0.9rem;font-size:0.9rem;">
+            Ogni kWh prodotto e consumato dai membri della CER genera un
+            incentivo economico che la comunit&agrave; pu&ograve; reinvestire sul territorio, portando ricchezza e
+            benessere a tutti i cittadini, anche quelli che
+            non participerebbero alla CER.
+          </p>
+        </div>
+        <img class="backimg" src="src/rivalta_solar1.png" alt="impianto solare" />
+      </div>
+    </section>
+
+    <!-- Slide 4: ruolo Comune -->
+    <section class="slide" data-slide="4">
+      <div class="content">
+        <h2>Il Comune di Rivalta <br /> moltiplicatore di impatto</h2>
+        <p class="secondary center">
+          Il Comune non pu&ograve; ricevere ristorni, ma pu&ograve; trasformarsi nel principale alleato della CER:
+          pi&ugrave; consumi
+          pubblici entrano nella comunit&agrave;, pi&ugrave; risorse diventano disponibili per i progetti a favore dei
+          cittadini.
+        </p>
+        <div class="grid-2 mt-4">
+          <div class="glass">
+            <h3>Cosa pu&ograve; mettere in gioco il Comune</h3>
+            <ul class="muted mt-2">
+              <li>Scuole, palestre, uffici comunali, biblioteche ...</li>
+              <li>Illuminazione pubblica e altri servizi comunali elettrici dentro il perimetro della comunit&agrave;
+                energetica.</li>
+              <li>Possibilit&agrave; di inserire aree industriali dismesse da rigenerare con nuovi impianti
+                HelioH<sub>2</sub> a servizio della CER.</li>
+            </ul>
+          </div>
+          <div class="glass">
+            <h3>Quali risultati politici e sociali</h3>
+            <ul class="muted mt-2">
+              <li>Una svolta ecologica visibile: il Comune guida la transizione energetica con un progetto concreto di
+                impianto produttivo.</li>
+              <li>Nuove risorse per spazi pubblici, servizi, iniziative culturali e sociali senza gravare sul bilancio
+                ordinario.</li>
+              <li>Supporto all&apos;adesione di famiglie vulnerabili e realt&agrave; sociali, per combattere la
+                povert&agrave; energetica.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: rigenerazione -->
+    <section class="slide" data-slide="5">
+      <div class="content">
+        <h2>Da un impianto iniziale<br />ad una rete di luoghi rigenerati</h2>
+        <p class="secondary center">
+          Il progetto &egrave; una realt&agrave; elastica: si pu&ograve; terminare con il primo impianto o proseguire
+          con nuovi progetti, coinvolgendo risorse
+          per riqualificare il territorio tramite finanziamenti nazionali ed europei.
+        </p>
+        <div class="grid-3 mt-4">
+          <div class="glass">
+            <h3>🏭 Aree industriali dismesse</h3>
+            <p class="muted">
+              HelioH<sub>2</sub> pu&ograve; prendersi carico della riqualificazione energetica di aree dismesse,
+              trasformandole in luoghi
+              che producono valore.
+            </p>
+          </div>
+          <div class="glass">
+            <h3>🔁 Filiera locale coinvolta</h3>
+            <p class="muted">
+              Ogni nuovo impianto significa lavori e manutenzione che possono trasformarsi in opportunit&agrave; per le
+              imprese del territorio.
+            </p>
+          </div>
+          <div class="glass">
+            <h3>🌍 Una storia da raccontare</h3>
+            <p class="muted">
+              Rivalta pu&ograve; raccontarsi come uno tra i pochi comuni italiani che vuole veramente investire nella
+              transizione energetica.
+            </p>
+          </div>
+        </div>
+        <img class="backimg" src="src/rivalta_solar2.png" alt="impianto" />
+      </div>
+    </section>
+
+    <!-- Slide 6: stato lavori -->
+    <section class="slide" data-slide="6">
+      <div class="content center">
+        <h2>Dove siamo oggi</h2>
+        <p class="secondary">
+          HelioH<sub>2</sub> sta gi&agrave; lavorando con l&apos;Ufficio Urbanistica per il Permesso di Costruire e la
+          PAS del primo
+          impianto.<br />Ora vogliamo fare un passo in pi&ugrave; insieme al Comune di Rivalta.
+        </p>
+        <div class="grid-2 mt-4">
+          <div class="glass">
+            <h3>Stato attuale</h3>
+            <ul class="muted mt-2">
+              <li>Progetto dell&apos;impianto pilota HelioH<sub>2</sub> a Rivalta definito.</li>
+              <li>Iter in corso con l&apos;Ufficio Urbanistica per Permesso di Costruire e PAS.</li>
+              <li>Progettazione della SAIL CER Rivalta come contenitore degli incentivi e dei benefici.</li>
+              <li>Presentato Bando ON - Nuove Imprese di Invitalia</li>
+            </ul>
+          </div>
+          <div class="glass">
+            <h3>Cosa proponiamo al Comune</h3>
+            <ul class="muted mt-2">
+              <li>Partecipare alla nascita di <strong>SAIL CER Rivalta</strong> come promotore principale.</li>
+              <li>Selezionare il gruppo di utenze (POD) comunali da inserire nella CER per aumentare l&apos;energia
+                condivisa.</li>
+              <li>Individuare il metodo migliore per il finanziamento dei progetti.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: chiusura -->
+    <section class="slide last" data-slide="7">
+      <div class="content center">
+        <div style="font-size:3rem;margin-bottom:0.6rem;">🌞</div>
+        <h2
+          style="background:linear-gradient(135deg,#facc15,#fde68a,#bae6fd,#a7f3d0);-webkit-background-clip:text;color:transparent;">
+          Il sole sopra Rivalta <br /> &egrave; gi&agrave; una risorsa della comunit&agrave;
+        </h2>
+        <p class="secondary" style="margin:0.8rem auto 0;">
+          Con SAIL CER Rivalta e il primo impianto HelioH<sub>2</sub> possiamo scegliere se lasciare che l&apos;energia
+          passi
+          semplicemente sopra le nostre teste, oppure se trasformarla in progetti, servizi e benessere per chi vive qui.
+        </p>
+        <p class="thankyou" style="margin:0.8rem auto 0;">
+          Grazie
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span id="counter">1 / 7</span>
+  </div>
+
+  <script>
+    let current = 1;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+
+    for (let i = 1; i <= total; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 1 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+
+    function goToSlide(n) {
+      const prev = document.querySelector('.slide.active');
+      const next = document.querySelector(`.slide[data-slide="${n}"]`);
+      if (prev) prev.classList.remove('active');
+      if (next) next.classList.add('active');
+      current = n;
+      updateNav();
+      next.scrollTop = 0;
+    }
+
+    function changeSlide(dir) {
+      let next = current + dir;
+      if (next < 1) next = total;
+      if (next > total) next = 1;
+      goToSlide(next);
+    }
+
+    function updateNav() {
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i + 1 === current);
+      });
+      counter.textContent = current + ' / ' + total;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+    });
+
+    let startX = 0;
+    document.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+  </script>
+</body>
+
+</html>
