@@ -1326,9 +1326,13 @@ section {
   gap: 1rem;
 }
 
-.footer-bottom p .github {
+.github {
    align-items: center;
    display: flex;
+}
+
+.github svg {
+   max-width: 18px;
 }
 
 .footer-bottom p {
